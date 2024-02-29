@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import fs from 'node:fs/promises';
 
 const isFileExists = async (path) => {
@@ -7,6 +8,12 @@ const isFileExists = async (path) => {
   } catch (e) {
     return false;
   }
+};
+
+export const getGeoData = async () => {
+  const url = new URL('http://ip-api.com/json/');
+  const response = await fetch(url);
+  return response.text();
 };
 
 const getWeatherData = async (lat, lon, mode) => {

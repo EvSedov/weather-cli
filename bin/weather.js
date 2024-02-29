@@ -3,7 +3,7 @@
 import process from 'node:process';
 import yargs from 'yargs/yargs';
 import { hideBin } from 'yargs/helpers';
-import run from '../src/index.js';
+import run, { getGeoData } from '../src/index.js';
 
 yargs(hideBin(process.argv))
   .usage('Usage: $0 [options]')
@@ -12,6 +12,12 @@ yargs(hideBin(process.argv))
   .strict()
   .command('$0', 'get weather', () => { }, (argv) => {
     run(argv);
+  })
+  .command('info current', 'get weather information for your current location', () => { }, async (argv) => {
+    const data = await getGeoData();
+    const jsonData = JSON.parse(data);
+    const { city } = jsonData;
+    run({ city, ...argv });
   })
   .options({
     lat: {
